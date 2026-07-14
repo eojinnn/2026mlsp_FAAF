@@ -15,11 +15,11 @@ def get_params(argv='1'):
 
         # INPUT PATH
         # dataset_dir='DCASE2020_SELD_dataset/',  # Base folder containing the foa/mic and metadata folders
-        dataset_dir = 'C:/data/2024DCASE_data/',
+        dataset_dir = 'C:/data/2022DCASE_data/',
 
         # OUTPUT PATHS
         # feat_label_dir='DCASE2020_SELD_dataset/feat_label_hnet/',  # Directory to dump extracted features and labels
-        feat_label_dir = './data/feature_labels_2023',
+        feat_label_dir = './data/feature_labels_2022',
 
         # DATASET LOADING PARAMETERS
         mode='dev',         # 'dev' - development or 'eval' - evaluation dataset

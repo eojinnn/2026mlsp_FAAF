@@ -11,7 +11,7 @@ import yaml
 
 from my_data_loader import LmdbDataset
 
-from models.my_model10 import ResnetConformer_seddoa_nopool_2023
+from models.my_model15 import ResnetConformer_seddoa_nopool_2023
 
 from lr_scheduler.tri_stage_lr_scheduler import TriStageLRScheduler
 from utils.cls_tools.cls_compute_seld_results import ComputeSELDResults

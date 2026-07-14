@@ -11,7 +11,7 @@ import yaml
 
 from my_data_loader import LmdbDataset
 
-from models.my_model14 import ResnetConformer_seddoa_nopool_2023
+from models.my_model15 import ResnetConformer_seddoa_nopool_2023
 
 from lr_scheduler.tri_stage_lr_scheduler import TriStageLRScheduler
 from utils.cls_tools.cls_compute_seld_results import ComputeSELDResults
@@ -60,7 +60,7 @@ def main(args):
     #pdb.set_trace()
     model = model.to(device)
     logger.info(model)
-    set_random_seed(12332)
+    set_random_seed(2024)
 
     if args['model']['pre-train']:
         model.load_state_dict(torch.load(args['model']['pre-train_model'], map_location=device))

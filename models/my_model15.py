@@ -40,7 +40,7 @@ class AuditoryFrontend(nn.Module):
         win_length=960,
         n_fft=1024,
         scaler_path=None,
-        gate_hidden=24,
+        gate_hidden=16,
         eps=1e-8,
     ):
         super().__init__()

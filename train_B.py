@@ -11,7 +11,7 @@ import yaml
 
 from my_data_loader import LmdbDataset
 
-from models.my_model14 import ResnetConformer_seddoa_nopool_2023
+from models.my_model15 import ResnetConformer_seddoa_nopool_2023
 
 from lr_scheduler.tri_stage_lr_scheduler import TriStageLRScheduler
 from utils.cls_tools.visualize import plot_frontend_prior, plot_frontend_dynamic_weights
@@ -70,7 +70,7 @@ def main(args):
     #pdb.set_trace()
     model = model.to(device)
     logger.info(model)
-    set_random_seed(12332)
+    set_random_seed(2024)
 
     # 预训练
     if args['model']['pre-train']:
@@ -87,6 +87,8 @@ def main(args):
                                     warmup_steps=warmup_steps, hold_steps=hold_steps, decay_steps=decay_steps)
     epoch_count = 0
     step_count = 0
+    best_seld_scr = float('inf')
+    best_ckpt_path = None
     # 开始训练
     stop_training = False
     while not stop_training:
@@ -180,12 +182,21 @@ def main(args):
         logger.info('epoch: {}, step: {}/{}, train_time:{:.2f}, test_time:{:.2f}, average_train_loss:{:.4f}, average_test_loss:{:.4f}'.format(epoch_count, step_count, total_steps, train_time, test_time, np.mean(train_loss), np.mean(test_loss)))
         logger.info('ER/F/LE/LR/SELD: {}'.format('{:0.4f}/{:0.4f}/{:0.4f}/{:0.4f}/{:0.4f}'.format(val_ER, val_F, val_LE, val_LR, val_seld_scr)))
 
-        # 保存模型
-        checkpoint_output_dir = args['result']['checkpoint_output_dir']
-        os.makedirs(checkpoint_output_dir, exist_ok=True)
-        model_path = os.path.join(checkpoint_output_dir, 'checkpoint_epoch{}_step{}.pth'.format(epoch_count, step_count))
-        torch.save(model.state_dict(), model_path)
-        logger.info('save checkpoint: {}'.format(model_path))
+        # 保存模型 (best SELD score만 유지하여 디스크 절약)
+        if val_seld_scr < best_seld_scr:
+            best_seld_scr = val_seld_scr
+            checkpoint_output_dir = args['result']['checkpoint_output_dir']
+            os.makedirs(checkpoint_output_dir, exist_ok=True)
+            model_path = os.path.join(checkpoint_output_dir, 'checkpoint_epoch{}_step{}.pth'.format(epoch_count, step_count))
+            torch.save(model.state_dict(), model_path)
+            if best_ckpt_path is not None and os.path.exists(best_ckpt_path):
+                os.remove(best_ckpt_path)
+            best_ckpt_path = model_path
+            logger.info('save best checkpoint (SELD={:.4f}): {}'.format(best_seld_scr, model_path))
+
+        # 채점에 사용한 epoch별 CSV 폴더 삭제 (디스크 절약)
+        if os.path.exists(dcase_output_val_dir):
+            shutil.rmtree(dcase_output_val_dir)
 
 
 if __name__ == "__main__":

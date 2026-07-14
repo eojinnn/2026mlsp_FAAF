@@ -279,9 +279,9 @@ def debug_read_lmdb2(lmdb_dir):
 if __name__ == "__main__":
     # 2022
     # 2024
-    npy_data_dir = './data/feature_labels_2023/mic_dev'
-    npy_label_dir = './data/feature_labels_2023/mic_dev_label'
-    lmdb_out_dir = './data/feature_labels_2023/lmdb_synthdata_len10s'
+    npy_data_dir = './data/feature_labels_2022/mic_dev'
+    npy_label_dir = './data/feature_labels_2022/mic_dev_label'
+    lmdb_out_dir = './data/feature_labels_2022/lmdb_synthdata_len10s'
     segment_length_s=10
     npy_to_lmdb(npy_data_dir, npy_label_dir, lmdb_out_dir,segment_length_s)
     debug_read_lmdb(lmdb_out_dir)

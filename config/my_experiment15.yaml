@@ -1,11 +1,11 @@
 data:
-  train_lmdb_dir: './data/feature_labels_2023/lmdb_synthdata_len10s' 
-  test_lmdb_dir: './data/feature_labels_2023/lmdb_synthdata_len10s' 
-  ref_files_dir: 'C:/data/2024DCASE_data/metadata_dev' # label files
+  train_lmdb_dir: './data/feature_labels_2022/lmdb_synthdata_len10s' 
+  test_lmdb_dir: './data/feature_labels_2022/lmdb_synthdata_len10s' 
+  ref_files_dir: 'C:/data/2022DCASE_data/metadata_dev' # label files
   norm_file: "C:/26'interspeech/Solution_on_3D_SELD/data/feature_labels_2023/mic_wts" # normalization file
   test_segment_len: 100 
   train_segment_len: 100
-  # segment_len: 100
+  segment_len: 100
   batch_size: 32
   train_ignore: 'enh' # or None. 'enh' means ignore the enhancement data
   test_ignore: 'enh'
@@ -18,8 +18,8 @@ model:
   in_dim: 64
   out_dim: 39
   # 'early_manifold'
-  pre-train: False
-  pre-train_model: #'./output/my_experiment13/checkpoints\checkpoint_epoch345_step94185.pth'
+  pre-train: True
+  pre-train_model: './output/my_experiment15/checkpoints\checkpoint_epoch337_step92001.pth'
 
 train:
   train_num_workers: 0

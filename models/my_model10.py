@@ -21,6 +21,7 @@ class GlobalScalar(nn.Module):
     def __init__(self, scaler_path):
         super().__init__()
         scaler = joblib.load(scaler_path)
+        print(scaler.shape)
         mean = torch.tensor(scaler.mean_, dtype=torch.float32).view(1,10,1,64)
         std = torch.tensor(scaler.scale_, dtype=torch.float32).view(1,10,1,64)
         self.register_buffer('mean', mean)
