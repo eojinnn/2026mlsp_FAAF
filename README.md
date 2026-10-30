@@ -1,71 +1,62 @@
-# Frequency adaptive auditory frontend
+# Frequency-Adaptive Auditory Frontend for Microphone-Domain Sound Event Localization and Detection
 
-## Extract Audio Features
+**Eojin Kim, Sungbin Im** | Soongsil University | IEEE MLSP 2026
 
-Change dataset path and feature path in `utils/cls_tools/parameters.py` script
+[Code](https://github.com/eojinnn/2026mlsp_FAAF) | [Research Portfolio](https://github.com/eojinnn/Research-portfolio)
 
-```python
-dataset_dir = '...'
-feat_label_dir = '...'
+FAAF adaptively weights log-mel and GCC-PHAT features for microphone-domain SELD. **ResNet-Conformer and CST-Former are the two evaluation backends**; their architectures and training protocols are retained to isolate the effect of the proposed frontend.
 
-# Extract audio features
+## Reference Implementations
+
+- **ResNet-Conformer:** Based on [Solution_on_3D_SELD](https://github.com/yxdong0320/Solution_on_3D_SELD), including its data preparation and training pipeline.
+- **CST-Former:** Based on [CST-former](https://github.com/yusunnny/CST-former), maintained separately and not included in this repository.
+- **Our contribution:** The frequency-adaptive frontend, rather than a new backend.
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+## Data Preparation
+
+Configure local dataset/feature paths in `utils/cls_tools/parameters.py` and run:
+
+```bash
 python utils/cls_tools/batch_feature_extraction.py
 ```
 
-## Package in LMDB Format
+Then set the paths in `utils/lmdb_tools/convert_lmdb.py` and run:
 
-Change feature path and lmdb path in `utils/lmdb_tools/convert_lmdb.py` script
-
-```python
-npy_data_dir = '...'
-npy_label_dir = '...'
-lmdb_out_dir = '...'
-
-# Package lmdb
+```bash
 python utils/lmdb_tools/convert_lmdb.py
 ```
 
 ## Training
 
-Change lmdb path, ground truth label path, feature normalization file path, and training result path in `config/A_RC_SED-SDE.yaml`
+For the ResNet-Conformer path, configure local paths, normalization and checkpoint settings in `config/my_experiment15.yaml`. Set `model.pre-train: False` for training from scratch.
 
-```python
-data:
-  train_lmdb_dir: '...'
-  test_lmdb_dir: '...'
-  ref_files_dir: '...'
-  norm_file: '...'
-result:
-  log_output_path: '...'
-  log_interval: 100
-  checkpoint_output_dir: '...'
-  dcase_output_dir: '...'
-# Load pre-trained file
-model:
-  pre-train: False
-  # pre-train_model: 'checkpoint_epoch146_step39858'
-# Model training
-python train_A_sedsde.py -c A_RC_SED-SDE
+```bash
+python train_B.py -c my_experiment15
 ```
 
-## Testing
+The frontend implementation used here is in `models/my_model15.py`. To inspect learned frontend weights from an existing compatible checkpoint:
 
-Change lmdb path, ground truth label path, feature normalization file path, and training result path in `config/A_RC_SED-SDE.yaml`
-
-```python
-data:
-  train_lmdb_dir: '...'
-  test_lmdb_dir: '...'
-  ref_files_dir: '...'
-  norm_file: '...'
-result:
-  log_output_path: '...'
-  log_interval: 100
-  checkpoint_output_dir: '...'
-  dcase_output_dir: '...'
-model:
-  pre-train: True
-  pre-train_model: 'checkpoint_epoch146_step39858'
-# Model testing
-python test_A.py -c A_RC_SED-SDE
+```bash
+python reproduce_frontend_weights.py -c my_experiment15 --checkpoint /path/to/checkpoint.pth
 ```
+
+**Note:** This research repository contains additional experiment variants. The commands have not been independently verified as a clean reproduction of all published results. The CST-Former backend code is available from the linked upstream project.
+
+## Citation
+
+```bibtex
+@inproceedings{kim2026faaf,
+  title={Frequency-Adaptive Auditory Frontend for Microphone-Domain Sound Event Localization and Detection},
+  author={Kim, Eojin and Im, Sungbin},
+  booktitle={2026 IEEE International Workshop on Machine Learning for Signal Processing (MLSP)},
+  year={2026}
+}
+```
+
+The original [MIT license](LICENSE) from the ResNet-Conformer reference implementation is retained.
