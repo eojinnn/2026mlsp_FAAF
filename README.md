@@ -47,10 +47,10 @@ This repository contains the research implementation, experiment variants, data-
 
 | Path | Description |
 | --- | --- |
-| [models/my_model15.py](models/my_model15.py) | Auditory frontend with frequency priors and learned weighting, used by \`train_B.py\` |
-| [train_B.py](train_B.py) | ResNet-Conformer research training entry point importing \`my_model15\` |
+| [models/my_model15.py](models/my_model15.py) | Auditory frontend with frequency priors and learned weighting, used by `train_B.py` |
+| [train_B.py](train_B.py) | ResNet-Conformer research training entry point importing `my_model15` |
 | [models/](models/) | Backbone components and additional research model variants |
-| [config/](config/) | Experiment-specific YAML configurations, including \`my_experiment15.yaml\` |
+| [config/](config/) | Experiment-specific YAML configurations, including `my_experiment15.yaml` |
 | [reproduce_frontend_weights.py](reproduce_frontend_weights.py) | Script for visualizing frontend weights from an **existing compatible checkpoint** |
 | [utils/cls_tools/](utils/cls_tools/) | SELD feature extraction, metrics, and plotting tools |
 | [utils/lmdb_tools/](utils/lmdb_tools/) | LMDB packaging utilities |
@@ -61,18 +61,18 @@ This repository contains the research implementation, experiment variants, data-
 The project uses Python, PyTorch, torchaudio, and additional libraries listed in [requirements.txt](requirements.txt). It also needs appropriate microphone-domain SELD datasets, metadata, feature normalization statistics, and local data preparation.
 
 1. **Set paths** in [utils/cls_tools/parameters.py](utils/cls_tools/parameters.py) before running audio feature extraction.
-2. Run the existing feature extraction utility: \`python utils/cls_tools/batch_feature_extraction.py\`.
+2. Run the existing feature extraction utility: `python utils/cls_tools/batch_feature_extraction.py`.
 3. **Configure** the feature/label directories and LMDB output locations in [utils/lmdb_tools/convert_lmdb.py](utils/lmdb_tools/convert_lmdb.py).
 4. Review the research configuration (for example, [my_experiment15.yaml](config/my_experiment15.yaml)) to set LMDB paths, reference metadata, normalization file, checkpoint options, and output directories.
-5. For the ResNet-Conformer model path wired in \`train_B.py\`, inspect the configuration and launch with:
+5. For the ResNet-Conformer model path wired in `train_B.py`, inspect the configuration and launch with:
 
-\`\`\`bash
+```bash
 python train_B.py -c my_experiment15
-\`\`\`
+```
 
 **Reproducibility note:** The checked-in configuration includes machine-specific absolute paths and a pretrained-checkpoint flag. Change these to your local paths, and set the checkpoint behavior according to whether you are training or evaluating. The command above describes the code entry point; **it has not been independently tested as an exact reproduction of every published result**. The CST-Former experimental pipeline and the various archived model versions should not be assumed interchangeable with this entry point.
 
-The earlier \`train_A_sedsde.py -c A_RC_SED-SDE\` example invokes a different baseline model and is therefore not presented here as the main FAAF training command.
+The earlier `train_A_sedsde.py -c A_RC_SED-SDE` example invokes a different baseline model and is therefore not presented here as the main FAAF training command.
 
 ## Publication
 
